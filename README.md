@@ -1,88 +1,148 @@
-# 🎓 CampusConnect: Workshop Management System
+# CampusConnect
+Live Link: https://workshop-connect.vercel.app/
 
-![React](https://img.shields.io/badge/Frontend-React-blue)
-![Vite](https://img.shields.io/badge/Build-Vite-purple)
-![Node.js](https://img.shields.io/badge/Backend-Node.js-green)
-![Express](https://img.shields.io/badge/API-Express-black)
-![Firebase](https://img.shields.io/badge/Database-Firebase-orange)
-![TailwindCSS](https://img.shields.io/badge/Styling-TailwindCSS-38B2AC)
-![License](https://img.shields.io/badge/License-MIT-lightgrey)
-
-A **full-stack, extremely robust web application** built to streamline workshop management in colleges and organizations. **CampusConnect** enables organizers to create events securely while allowing students to discover, register, and track their participation cleanly.
-
-Built for high-concurrency environments, it features robust **Firebase Authentication** alongside **Role-Based Access Control**, real-time NoSQL syncing, and highly aggressive race-condition protections using **Firestore Data Transactions**.
-
----
-
-## ✨ Enterprise-Grade Features
-
-### 👨‍🎓 Student / Colleague Features
-* Discover dynamically populated upcoming workshops
-* Browse using beautiful grid/list sorting with visually stunning modern gradients
-* Quick one-click registration logic
-* **My Hub:** View & track current/past registered events
-* Auto-syncing Google Sign-in alongside traditional Email/Password authentication
-
-### 🧑‍🏫 Organizer Features
-* **Create Workshops:** Rich details including custom capacities, dates, times, and tagging.
-* **Organized Hub:** Full control over your created workshops
-* View an active roster of registrants and export capacities
-* Rich analytical charts powered by Custom Chart.js integrations outlining Fill Rates & Popularity Tracking
-* *Note: Newly created workshops are placed under a Pending Approval state until verified.*
-
-### 🛡️ Admin & Security Features
-* **Dedicated Admin Dashboard:** Specialized queue to swiftly Approve or Reject pending workshops created by organizers.
-* **Concurrency Safe:** Hardened backend utilizes Firestore Database Transactions so 100 students registering at the exact same millisecond will **never** surpass capacity limits.
-* **Secure Middleware:** Role-Based Access checking interceptors.
-* **Rate Limited & Helmet Shielded:** Prevents IP spam, brute force abuse, and safeguards HTTP headers out of the box.
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+  - [Frontend](#frontend)
+  - [Backend](#backend)
+- [Tech Stack](#tech-stack)
+  - [Frontend](#frontend-1)
+  - [Backend](#backend-1)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Environment Variables](#environment-variables)
+  - [Running Locally](#running-locally)
+- [API Endpoints Overview](#api-endpoints-overview)
 
 ---
 
-## 🛠 Tech Stack
-
-### Frontend Architecture
-* **React 18** (via Vite)
-* **Tailwind CSS** (Completely responsive out-of-the-box!)
-* **React Router Dom** 
-* **Framer Motion** (Micro-animations and layout transitions)
-* **Chart.js / React-Chartjs-2**
-* **Firebase Auth API** (Google & Email/Password Sign-In)
-
-### Backend Architecture
-* **Node.js** + **Express.js** API
-* **Firebase Admin SDK** 
-* **Express Rate Limit** 
-* **Helmet** 
-* **CORS & Dotenv**
-
-### Database Layer
-* **Firebase Firestore** (Strict NoSQL cloud database setup with Data Transactions)
+## Overview
+CampusConnect is a robust web application designed to help colleges and student organizations seamlessly manage workshops, automate student registrations, track participation, and gain insights into event performance. It features a stunning responsive user interface built using React and Tailwind CSS, communicating with a highly secure Node.js/Express backend API connected to a Firebase Firestore NoSQL database.
 
 ---
 
-## 🚀 Local Development Setup
+## Features
 
-Follow these exact steps to clone the application and run it locally:
+### Frontend
+- **Explore Dashboard:** Overview of all upcoming validated workshops with real-time capacity tracking.
+- **Workshop Management:** Full CRUD operations for Organizers (Create, View, Edit, Delete). Includes a mandatory "Pending Approval" state for newly submitted events.
+- **Admin Approvals:** Dedicated administrative view allowing assigned administrators to safely Approve or Reject newly submitted workshops.
+- **One-Click Registrations:** Secure and instant registration pipeline for students to book spots.
+- **My Hub:** Personalized dashboard tracking upcoming vs. past registered workshops.
+- **Analytics:** Detailed insights for organizers including Fill Rates, Topic Distribution, and Total Registrants visualized with beautiful pie and bar charts via Chart.js.
+- **Authentication:** Secure Firebase Authentication (Email/Password & seamless Google Sign-In) tightly integrated with React Context API.
+- **Responsive Design:** Completely fluid UI adapting perfectly to mobile, tablet, and desktop screens with micro-animations provided by Framer Motion.
 
-### 1️⃣ Clone the Repository
+### Backend
+- **RESTful API:** Built completely with Express.js and Node.js.
+- **Authentication & Authorization:** Firebase Admin token verification middleware specifically routing actions using Role-Based Access Control (Admin vs. Organizer vs. Student).
+- **Concurrency & Race Conditions Safety:** Firestore Data Transactions guarantee capacities cannot be bypassed during huge registration spikes.
+- **Database:** Firebase Firestore cloud database ensuring low-latency NoSQL operations.
+- **Enterprise Security:** API routes proactively shielded by `express-rate-limit` (DDoS prevention), `helmet` (HTTP header security), and strict `cors` policies.
+
+---
+
+## Tech Stack
+
+### Frontend
+- **React:** JavaScript library for building user interfaces.
+- **React Router:** For localized client-side routing.
+- **Tailwind CSS:** Utility-first CSS framework for powerful styling and responsiveness.
+- **React Context API:** Global state management handling Authentication.
+- **Chart.js & react-chartjs-2:** Fast, clean data visualization graphics.
+- **Lucide React:** Beautiful UI iconography.
+- **Axios:** For making HTTP REST requests to the backend.
+- **Vite:** Next-generation frontend build tooling.
+
+### Backend
+- **Node.js:** Server-side JavaScript runtime environment.
+- **Express.js:** Lightweight routing web framework.
+- **Firebase Admin SDK:** Server integration communicating to Google Cloud infrastructure.
+- **Firebase Firestore:** Enterprise NoSQL database.
+- **Security Middlewares:** `cors`, `helmet`, and `express-rate-limit`.
+- **dotenv:** Securing and loading critical environment parameters.
+
+---
+
+## Project Structure
+
+```text
+/CampusConnect
+|-- /frontend
+|   |-- /node_modules
+|   |-- /public
+|   |-- /src
+|   |   |-- /api             # API routing configuration (axios.js, firebase.js)
+|   |   |-- /components      # Reusable UI elements (TopBar, RegistrationModal, WorkshopCard, etc.)
+|   |   |-- /context         # React Context files (AuthContext)
+|   |   |-- /hooks           # Custom data fetching hooks
+|   |   |-- /pages           # App views (HomePage, AdminApprovals, Analytics, EditWorkshop, etc.)
+|   |   |-- /utils           # Date formatting utility logic
+|   |   |-- App.jsx          # Secure Routing Tree
+|   |   |-- main.jsx         # App Entry Point
+|   |   |-- styles.css       # Global component/utility definitions
+|   |-- .env                 # Frontend environment variables (Vite Firebase keys)
+|   |-- package.json
+|   |-- tailwind.config.js
+|   `-- vite.config.js
+|
+`-- /backend
+    |-- /node_modules
+    |-- /config              # Contains Firebase config logic
+    |-- /controllers         # Core operation logic (Registrations, Workshops, Users)
+    |-- /middlewares         # Auth token & Role checks
+    |-- /routes              # Express API endpoint definitions
+    |-- .env                 # Backend config (CORS port, Frontend URLs)
+    |-- make-admin.js        # Script to manually promote Admin users
+    |-- make-organizer.js    # Script to manually promote Organizer users
+    |-- package.json
+    `-- server.js            # Main backend API entry point
+```
+
+---
+
+## Getting Started
+Follow these instructions to set up and run the project locally.
+
+### Prerequisites
+- **Node.js**: v18.x or later recommended.
+- **Firebase Setup**: An active Google Firebase Project (Authentication & Firestore Database initialized).
+
+### Installation
+Clone the repository:
 ```bash
 git clone https://github.com/shashvatpatel15/CampusConnect.git
 cd CampusConnect
 ```
 
-### 2️⃣ Firebase Setup & Credentials
-This project completely relies on standard Firebase infrastructure. 
+Install Backend Dependencies:
+```bash
+cd backend
+npm install
+```
 
-#### Backend (Admin SDK)
-1. Go to your Firebase Console -> Project Settings -> Service Accounts.
-2. Click **Generate new private key**.
-3. Download the JSON file, rename it to `serviceAccountKey.json`, and place it in the following directory:
-   👉 `backend/config/serviceAccountKey.json`
+Install Frontend Dependencies:
+```bash
+cd ../frontend
+npm install
+```
 
-#### Frontend (Client Config)
-1. In your Firebase Console, navigate to Project Settings -> General.
-2. Copy your Web App config credentials.
-3. Create a `.env` file inside the `frontend/` directory formatted like this:
+### Environment Variables
+Environment variables are securely isolated. Create `.env` files in their respective folders.
+
+**1. Backend Credentials (`backend/.env`)**
+Create a `.env` file in the `/backend` directory:
+```env
+PORT=5000
+FRONTEND_URL=http://localhost:5173
+```
+*Note: You must also obtain your Firebase Service Account JSON file from your Firebase console and save it to `backend/config/serviceAccountKey.json`*
+
+**2. Frontend Credentials (`frontend/.env`)**
+Create a `.env` file in the `/frontend` directory containing your Firebase Web App credentials:
 ```env
 VITE_FIREBASE_API_KEY=your_api_key
 VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
@@ -92,54 +152,45 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
 ```
 
-### 3️⃣ Backend Environment Setup
-Create a `.env` file inside the `backend/` directory:
-```env
-PORT=5000
-FRONTEND_URL=http://localhost:5173
-```
+### Running Locally
 
-### 4️⃣ Install Dependencies & Run
-Split your terminal to run both the frontend and backend servers.
-
-**Terminal 1 (Backend):**
+**Start the Backend Server:**
+Open a designated terminal:
 ```bash
 cd backend
-npm install
 npm run dev
-# Server should boot on http://localhost:5000
 ```
+The server will boot to port `5000` via `nodemon`.
 
-**Terminal 2 (Frontend):**
+**Start the Frontend Client:**
+Open a new terminal window:
 ```bash
 cd frontend
-npm install
 npm run dev
-# Local app should open on http://localhost:5173
 ```
+Your browser will auto-launch the UI on `http://localhost:5173`.
 
 ---
 
-## 🔑 Activating Organizer & Admin Roles
+## API Endpoints Overview
+The backend strictly protects these main routes via Firebase ID Tokens + RBAC.
 
-By default, any new user who signs up natively or through Google signs in as a normal **Student**. To test Organizer and Admin functionality, run the designated scripts securely tracked within the Backend CLI.
+### 📚 Workshops
+- **`GET` /api/workshops**: Fetch all publicly approved workshops.
+- **`POST` /api/workshops**: Create a new workshop (`pending` by default, requires Organizer role).
+- **`GET` /api/workshops/:id**: Search a specific workshop.
+- **`PUT`, `DELETE` /api/workshops/:id**: Modify/Drop a workshop (requires Organizer creator).
+- **`GET` /api/workshops/me/organized**: Fetch exclusively organized workshops for dashboards.
 
-Make sure your backend server is stopped safely, or open a third terminal inside the `backend/` directory:
+### 🛡️ Admin
+- **`GET` /api/workshops/admin/pending**: Retrieve queue of unverified workshops (requires Admin role).
+- **`PATCH` /api/workshops/admin/:id/status**: Set state to `approved` or `rejected`.
 
-**To grant a user Organizer Privileges:**
-```bash
-node make-organizer.js
-# Enter the user's email address
-```
+### 📝 Registrations
+- **`POST` /api/registrations**: Safely book a student into a workshop using Firestore atomic transactions.
+- **`GET` /api/registrations/me**: Obtain logged-in user's personalized active registration tracking.
+- **`DELETE` /api/registrations/:id**: Safely deregister from an upcoming event.
 
-**To grant a user Admin Privileges:**
-```bash
-node make-admin.js
-# Enter the user's email address
-```
-*Note: Ensure the target user has already created a standard account through the frontend before running these scripts! Refresh the frontend page to see the role take effect.*
-
----
-
-## 📄 License
-This brilliant repository is licensed under the **MIT License**. Use and alter responsibly!
+### 👤 User
+- **`POST` /api/auth/signup**: Handle post-signup synchronization mapping Firebase users into Firestore Profiles.
+- **`GET`, `PUT`, `DELETE` /api/users/profile**: Manage currently active student profile logic.
