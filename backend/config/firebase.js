@@ -1,12 +1,11 @@
-// config/firebase.js
 const admin = require('firebase-admin');
 
-// Using try-catch to avoid multiple initialization error if it occurs during hot-reloads
 try {
   if (!admin.apps.length) {
-    const serviceAccount = require('./serviceAccountKey.json');
+    const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+
     admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount)
+      credential: admin.credential.cert(serviceAccount),
     });
   }
 } catch (error) {
