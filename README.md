@@ -1,5 +1,4 @@
-# CampusConnect
-Live Link: https://workshop-connect.vercel.app/
+## CampusConnect
 
 ## Table of Contents
 - [Overview](#overview)
