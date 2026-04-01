@@ -1,4 +1,4 @@
-## CampusConnect
+# CampusConnect
 
 ## Table of Contents
 - [Overview](#overview)
